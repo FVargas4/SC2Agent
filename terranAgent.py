@@ -64,9 +64,20 @@ class TerranAgent(base_agent.BaseAgent):
         if len(scvs) > 0 :
           scv = random.choice(scvs)
           return actions.FUNCTIONS.select_point("select",(scv.x,scv.y))
+  
+  def upgrade_terrans(self, obs):
+    enbase = self.get_units_by_type(obs, units.Terran.EngineeringBay)
+    materials = obs.observation.player.minerals
+    vespene = obs.observation.player.vespene_gas
 
-  # def build_infantry_weapons(self, obs):
-  #   enbase = self.get_units_by_type(obs, units.Terran.Infantry)
+    if len(enbase) < 1 and len(materials) > 100 and len(vespene) > 100:
+        if self.unit_type_is_selected(obs, units.Terran.EngineeringBay):
+          bay = random.choice(enbase)
+          if self.can_do(obs, actions.FUNCTIONS.Research_TerranInfantryArmorLevel1_quick.id):
+            x = random.randint(0, 83)
+            y = random.randint(0, 83)
+            return actions.FUNCTIONS.Research_TerranInfantryArmorLevel1_quick('now', ( x, y))
+
 
   def step(self, obs):
     super(TerranAgent, self).step(obs)
@@ -150,6 +161,12 @@ class TerranAgent(base_agent.BaseAgent):
     g_refinery = self.gather_vespene_gas(obs)
     if g_refinery:
           return g_refinery
+
+    # upgade_weapons = self.upgrade_terrans(obs)
+    # if upgade_weapons:
+    #       return upgade_weapons
+
+    
     
     return actions.FUNCTIONS.no_op()
 
