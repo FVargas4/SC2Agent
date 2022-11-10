@@ -33,6 +33,41 @@ class TerranAgent(base_agent.BaseAgent):
   def can_do(self, obs, action):
     return action in obs.observation.available_actions
 
+  def build_refinery(self, obs):
+    vespene_geysers = self.get_units_by_type(obs, units.Neutral.VespeneGeyser)
+    refineries = self.get_units_by_type(obs, units.Terran.Refinery)
+
+    if len(refineries) < 1 and len(vespene_geysers) > 0:
+        if self.unit_type_is_selected(obs, units.Terran.SCV):
+          if self.can_do(obs, actions.FUNCTIONS.Build_Refinery_screen.id):
+            geyser = random.choice(vespene_geysers)
+            return actions.FUNCTIONS.Build_Refinery_screen("now", (geyser.x, geyser.y))
+
+        scvs = self.get_units_by_type(obs, units.Terran.SCV)
+
+        if len(scvs) > 0:
+          scv = random.choice(scvs)
+          return actions.FUNCTIONS.select_point("select_all_type", (scv.x, scv.y))
+
+  def gather_vespene_gas(self,obs):
+    refinery = self.get_units_by_type(obs, units.Terran.Refinery)
+    if len(refinery) > 0:
+      refinery = random.choice(refinery)
+      if refinery['assigned_harvesters'] < 3:
+        if self.unit_type_is_selected(obs, units.Terran.SCV):
+          if len(obs.observation.single_select) < 2 and len(obs.observation.multi_select) < 2:
+            if self.can_do(obs,actions.FUNCTIONS.Harvest_Gather_screen.id):
+
+              return actions.FUNCTIONS.Harvest_Gather_screen("now",(refinery.x, refinery.y))
+                            
+        scvs = self.get_units_by_type(obs, units.Terran.SCV)
+        if len(scvs) > 0 :
+          scv = random.choice(scvs)
+          return actions.FUNCTIONS.select_point("select",(scv.x,scv.y))
+
+  # def build_infantry_weapons(self, obs):
+  #   enbase = self.get_units_by_type(obs, units.Terran.Infantry)
+
   def step(self, obs):
     super(TerranAgent, self).step(obs)
     
@@ -55,8 +90,7 @@ class TerranAgent(base_agent.BaseAgent):
     if len(marines) >= 10:
       if self.unit_type_is_selected(obs, units.Terran.Marine):
         if self.can_do(obs, actions.FUNCTIONS.Attack_minimap.id):
-          return actions.FUNCTIONS.Attack_minimap('now', self.attack_coordinates)
-        
+          return actions.FUNCTIONS.Attack_minimap('now', self.attack_coordinates)  
       if self.can_do(obs, actions.FUNCTIONS.select_army.id):
         return actions.FUNCTIONS.select_army('select')
 
@@ -65,7 +99,7 @@ class TerranAgent(base_agent.BaseAgent):
 
     # Get Supply Depot as terrenian. Minerals available needed.                          
     terranian = self.get_units_by_type(obs, units.Terran.SupplyDepot)
-    if len(terranian) < 1 and minerals >= 100:
+    if len(terranian) < 2 and minerals >= 100:
       if self.unit_type_is_selected(obs, units.Terran.SCV):
         if self.can_do(obs, actions.FUNCTIONS.Build_SupplyDepot_screen.id):
           x = random.randint(0, 83)
@@ -75,14 +109,24 @@ class TerranAgent(base_agent.BaseAgent):
                                 
     # Check if there are barracks, if there is no barraks build one. Minerals available needed.
     barracks = self.get_units_by_type(obs, units.Terran.Barracks)
-    if len (barracks) < 2 and minerals >= 150:
+    if len (barracks) < 3 and minerals >= 150:
         if self.unit_type_is_selected(obs, units.Terran.SCV):
           if self.can_do(obs, actions.FUNCTIONS.Build_Barracks_screen.id):
             x = random.randint(0, 83)
             y = random.randint(0, 83)
             return actions.FUNCTIONS.Build_Barracks_screen('now', ( x, y))
 
-    if len(barracks) == 2:
+# Check if there are barracks, if there is no barraks build one. Minerals available needed.
+    enbase = self.get_units_by_type(obs, units.Terran.EngineeringBay)
+    if len (enbase) < 2 and minerals >= 125:
+        if self.unit_type_is_selected(obs, units.Terran.SCV):
+          if self.can_do(obs, actions.FUNCTIONS.Build_EngineeringBay_screen.id):
+            x = random.randint(0, 83)
+            y = random.randint(0, 83)
+            return actions.FUNCTIONS.Build_EngineeringBay_screen('now', ( x, y))
+
+
+    if len(barracks) >= 3:
       if self.unit_type_is_selected(obs, units.Terran.Barracks):
         marines = self.get_units_by_type(obs, units.Terran.Marine)
         if len(marines) <= 10:
@@ -90,13 +134,22 @@ class TerranAgent(base_agent.BaseAgent):
             return actions.FUNCTIONS.Train_Marine_quick('now')
       b = random.choice(barracks)
       return actions.FUNCTIONS.select_point('select_all_type', (b.x, b.y))
-    
-    
+        
+        
+    b_refinery = self.build_refinery(obs)
+    if b_refinery:
+        return b_refinery
+
     #Select SCV units 
     scvs = self.get_units_by_type(obs, units.Terran.SCV)
     if len(scvs) > 0:
         scv = random.choice(scvs)
         return actions.FUNCTIONS.select_point("select_all_type", (scv.x, scv.y))
+
+    # Gather Vespene Gas
+    g_refinery = self.gather_vespene_gas(obs)
+    if g_refinery:
+          return g_refinery
     
     return actions.FUNCTIONS.no_op()
 
