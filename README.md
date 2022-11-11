@@ -36,3 +36,4 @@ Get the full view of the agent's logic functioning on the [Agent Diagram](img/Di
 
 - [Deepmind's StarCraft 2 Python Agent](https://github.com/deepmind/pysc2)
 - [Ivettes medium post on terran agents](https://medium.com/@a01700762/build-a-basic-terran-agent-with-pysc2-2-0-framework-b5adb073cf7a)
+
