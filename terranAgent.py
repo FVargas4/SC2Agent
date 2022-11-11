@@ -238,7 +238,6 @@ class TerranAgent(base_agent.BaseAgent):
         return actions.FUNCTIONS.select_army('select')
     
     """Supply Depot (spawner) conditions"""
-
     # If there are not at least 2 supply depots and the agent has 100 materials
     if len(terranian) < 2 and minerals >= 100:
       # If the unit selected is a SCV
@@ -263,6 +262,7 @@ class TerranAgent(base_agent.BaseAgent):
           y = random.randint(0, 83)
           # Build the supply depot on the barracks coordinates
           return actions.FUNCTIONS.Build_Barracks_screen('now', ( x, y))
+
     """Build Engineering Bay conditions"""
     # If there are not at least 2 engineering bay and the agent has 125 materials
     if len (enbase) < 2 and minerals >= 125:
@@ -282,7 +282,7 @@ class TerranAgent(base_agent.BaseAgent):
       # If the unit selected is a Barrak
       if self.unit_type_is_selected(obs, units.Terran.Barracks):
         # If there are less than 10 marines
-        if len(marines) <= 10:
+        if len(marines) <= 15:
           # If it is possible to build a train (create) mairnes
           if self.can_do(obs, actions.FUNCTIONS.Train_Marine_quick.id):
             # Spawn Marines
