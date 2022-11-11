@@ -258,8 +258,8 @@ class TerranAgent(base_agent.BaseAgent):
         # If it is possible to build a Engineering Bay
         if self.can_do(obs, actions.FUNCTIONS.Build_EngineeringBay_screen.id):
           # Get [x, y] values randomly from 0 to 60 in both cases
-          x = random.randint(0, 60)
-          y = random.randint(0, 60)
+          x = random.randint(0, 83)
+          y = random.randint(0, 83)
           # Build the Engineering Bay on the random coordinates
           return actions.FUNCTIONS.Build_EngineeringBay_screen('now', ( x, y))
 
