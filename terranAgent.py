@@ -1,3 +1,6 @@
+
+""" Import necessary libraries """
+
 from pysc2.agents import base_agent
 from pysc2.env import sc2_env
 from pysc2.lib import actions, features, units
@@ -34,6 +37,8 @@ class TerranAgent(base_agent.BaseAgent):
   """
   
   Function unit_type_is_selected(self, observation object, Tag) [UTIS]
+
+  Send a boolean flag to let the agent know if the given tag (unit_type) is the object selected in-game.
   
     self (class): Allows the agent to access itself.
     obs (object): Object that acts as the sensors of the agent.
@@ -55,7 +60,7 @@ class TerranAgent(base_agent.BaseAgent):
   
   Function get_units_by_type(self, observation object, Tag)
 
-    Function that get units by type
+    Function that get a tag and confirms that that tag (unit_type) exists in the unit library, if this tag exists.
   
     self (class): Allows the agent to access itself.
     obs (object): Object that acts as the sensors of the agent.
@@ -69,11 +74,12 @@ class TerranAgent(base_agent.BaseAgent):
   
   Function can_do(self, observation object, Tag)
 
-    Function that determines whether the agent can do an action or not
+    Function that determines whether the agent can do an action or not.
   
     self (class): Allows the agent to access itself.
     obs (object): Object that acts as the sensors of the agent.
     action (Tag): API's internal Tag that identifies the action desired. 
+  _________________________________________________________________________________________
   
   """
   def can_do(self, obs, action):
@@ -81,14 +87,17 @@ class TerranAgent(base_agent.BaseAgent):
 
   """
   H-i I
+
   Function build_refinery(self, observation object)
+
+    Function that make SCVs build a refinery at some vespene geyser in the screen. 
   
     self (class): Allows the agent to access itself.
     obs (object): Object that acts as the sensors of the agent.
   _________________________________________________________________________________________
 
-  vespene_geysers (array): Array that contain the vespene geysers in the screen.
-  refineries (array): Array that contain the refineries in the screen.
+    vespene_geysers (array): Array that contain the vespene geysers in the screen.
+    refineries (array): Array that contain the refineries in the screen.
 
   """
   def build_refinery(self, obs):
@@ -121,12 +130,14 @@ class TerranAgent(base_agent.BaseAgent):
           return actions.FUNCTIONS.select_point("select_all_type", (scv.x, scv.y))
   """
   H-i I
+
   Function gather_vespene_gas(self, observation object)
+
+    Function that makes the SCVs gather vespene gas from the refinery to the command center.
+  ________________________________________________________________________
   
     self (class): Allows the agent to access itself.
     obs (object): Object that acts as the sensors of the agent.
-  ________________________________________________________________________
-
     refineries (array): Array that contain the fineries in the screen.
   
   """
@@ -163,7 +174,8 @@ class TerranAgent(base_agent.BaseAgent):
   """
   
   Function step(self, observation object)
-  
+    Function that determines what does the agent does/ trys to do each step of the game.
+  ________________________________________________________________________
     self (class): Allows the agent to access itself.
     obs (object): Object that acts as the sensors of the agent.
   
@@ -201,7 +213,7 @@ class TerranAgent(base_agent.BaseAgent):
     # Check if there are barracks, if there is no barraks build one. Minerals available needed.
     enbase = self.get_units_by_type(obs, units.Terran.EngineeringBay)
 
-    # Select SCV units 
+    # Select SCV units ing-game 
     scvs = self.get_units_by_type(obs, units.Terran.SCV)
 
     # Call GVG function to gather Vespene Gas
@@ -213,7 +225,7 @@ class TerranAgent(base_agent.BaseAgent):
     """Create attack conditions"""
 
     # If there are at least 10 marines
-    if len(marines) >= 12:
+    if len(marines) >= 15:
       # Select Marines
       if self.unit_type_is_selected(obs, units.Terran.Marine):
         # If you can check enemies' location on the minimap
@@ -239,6 +251,7 @@ class TerranAgent(base_agent.BaseAgent):
           # Build the supply depot on the random coordinates
           return actions.FUNCTIONS.Build_SupplyDepot_screen('now', ( x, y))
       
+    """Building barracks conditions"""
     # If there are not at least 3 barracks and the agent has 150 materials
     if len (barracks) < 3 and minerals >= 150:
       # If the unit selected is a SCV
@@ -250,7 +263,7 @@ class TerranAgent(base_agent.BaseAgent):
           y = random.randint(0, 83)
           # Build the supply depot on the barracks coordinates
           return actions.FUNCTIONS.Build_Barracks_screen('now', ( x, y))
-
+    """Build Engineering Bay conditions"""
     # If there are not at least 2 engineering bay and the agent has 125 materials
     if len (enbase) < 2 and minerals >= 125:
       # If the unit selected is a SCV
@@ -262,7 +275,8 @@ class TerranAgent(base_agent.BaseAgent):
           y = random.randint(0, 83)
           # Build the Engineering Bay on the random coordinates
           return actions.FUNCTIONS.Build_EngineeringBay_screen('now', ( x, y))
-
+     
+    """Training marines conditions"""
     # If there are not at least 2 engineering bay and the agent has 125 materials
     if len(barracks) >= 3:
       # If the unit selected is a Barrak
@@ -278,10 +292,12 @@ class TerranAgent(base_agent.BaseAgent):
       # Select point at barracks coordinates
       return actions.FUNCTIONS.select_point('select_all_type', (b.x, b.y))
 
+    """Building refinery conditions"""
     # if b_refinery runs correctly, return it  
     if b_refinery:
         return b_refinery
     
+    """Gathering gas from refinery conditions"""
     # if g_refinery runs correctly, return it  
     if g_refinery:
           return g_refinery
@@ -298,11 +314,10 @@ class TerranAgent(base_agent.BaseAgent):
 
   """
   
-  Function unit_type_is_selected(self, observation object, Tag)
-  
-    self (class): Allows the agent to access itself.
-    obs (object): Object that acts as the sensors of the agent.
-    unit_type (Tag): API's internal Tag that identifies the type of unit. 
+  Function main(unused argument)
+    Principal code in the file. It is the code that runs to open the game, create the agents, let the agents 
+    play and then restarts the agents once one of them is defeated. Conditional on line 350 only tells the 
+    interpreter to run the main function when this file is run in Python.
   
   """
 def main(unused_argv):
@@ -331,11 +346,14 @@ def main(unused_argv):
             break
           timesteps = env.step(step_actions)
       
+  # Interrupt the code from running using ctrl + C on the terminal the file is being run at.
   except KeyboardInterrupt:
     pass
+
+  # If the agent trys to click on coordinates outside of the actual screen.
   except ValueError:
     print('Crash')
     pass
-  
+# Tells the interpreter to run the main function when this file is run in Python.
 if __name__ == "__main__":
     app.run(main)
