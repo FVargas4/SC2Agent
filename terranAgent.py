@@ -222,23 +222,7 @@ class TerranAgent(base_agent.BaseAgent):
     # Call BR function to build Refinary
     b_refinery = self.build_refinery(obs)
 
-    """Create attack conditions"""
-
-    # If there are at least 10 marines
-    if len(marines) >= 15:
-      # Select Marines
-      if self.unit_type_is_selected(obs, units.Terran.Marine):
-        # If you can check enemies' location on the minimap
-        if self.can_do(obs, actions.FUNCTIONS.Attack_minimap.id):
-          # Send marines to attack them
-          return actions.FUNCTIONS.Attack_minimap('now', self.attack_coordinates)  
-      # If the selected unit is not Marine
-      if self.can_do(obs, actions.FUNCTIONS.select_army.id):
-        # Select the army (marines)
-        return actions.FUNCTIONS.select_army('select')
-    
     """Supply Depot (spawner) conditions"""
-
     # If there are not at least 2 supply depots and the agent has 100 materials
     if len(terranian) < 2 and minerals >= 100:
       # If the unit selected is a SCV
@@ -250,7 +234,7 @@ class TerranAgent(base_agent.BaseAgent):
           y = random.randint(0, 83)
           # Build the supply depot on the random coordinates
           return actions.FUNCTIONS.Build_SupplyDepot_screen('now', ( x, y))
-      
+
     """Building barracks conditions"""
     # If there are not at least 3 barracks and the agent has 150 materials
     if len (barracks) < 3 and minerals >= 150:
@@ -263,6 +247,33 @@ class TerranAgent(base_agent.BaseAgent):
           y = random.randint(0, 83)
           # Build the supply depot on the barracks coordinates
           return actions.FUNCTIONS.Build_Barracks_screen('now', ( x, y))
+
+    """Training marines conditions"""
+    # If there are not at least 2 engineering bay and the agent has 125 materials
+    if len(barracks) >= 3:
+      # If the unit selected is a Barrak
+      if self.unit_type_is_selected(obs, units.Terran.Barracks):
+        # If there are less than 10 marines
+        if len(marines) <= 10:
+          # If it is possible to build a train (create) mairnes
+          if self.can_do(obs, actions.FUNCTIONS.Train_Marine_quick.id):
+            # Spawn Marines
+            return actions.FUNCTIONS.Train_Marine_quick('now')
+            
+    """Create attack conditions"""
+    # If there are at least 10 marines
+    if len(marines) >= 15:
+      # Select Marines
+      if self.unit_type_is_selected(obs, units.Terran.Marine):
+        # If you can check enemies' location on the minimap
+        if self.can_do(obs, actions.FUNCTIONS.Attack_minimap.id):
+          # Send marines to attack them
+          return actions.FUNCTIONS.Attack_minimap('now', self.attack_coordinates)  
+      # If the selected unit is not Marine
+      if self.can_do(obs, actions.FUNCTIONS.select_army.id):
+        # Select the army (marines)
+        return actions.FUNCTIONS.select_army('select')
+      
     """Build Engineering Bay conditions"""
     # If there are not at least 2 engineering bay and the agent has 125 materials
     if len (enbase) < 2 and minerals >= 125:
@@ -276,17 +287,6 @@ class TerranAgent(base_agent.BaseAgent):
           # Build the Engineering Bay on the random coordinates
           return actions.FUNCTIONS.Build_EngineeringBay_screen('now', ( x, y))
      
-    """Training marines conditions"""
-    # If there are not at least 2 engineering bay and the agent has 125 materials
-    if len(barracks) >= 3:
-      # If the unit selected is a Barrak
-      if self.unit_type_is_selected(obs, units.Terran.Barracks):
-        # If there are less than 10 marines
-        if len(marines) <= 10:
-          # If it is possible to build a train (create) mairnes
-          if self.can_do(obs, actions.FUNCTIONS.Train_Marine_quick.id):
-            # Spawn Marines
-            return actions.FUNCTIONS.Train_Marine_quick('now')
       # Choose a random barrack
       b = random.choice(barracks)
       # Select point at barracks coordinates
