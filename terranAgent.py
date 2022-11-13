@@ -254,7 +254,7 @@ class TerranAgent(base_agent.BaseAgent):
       # If the unit selected is a Barrak
       if self.unit_type_is_selected(obs, units.Terran.Barracks):
         # If there are less than 10 marines
-        if len(marines) <= 10:
+        if len(marines) <= 15:
           # If it is possible to build a train (create) mairnes
           if self.can_do(obs, actions.FUNCTIONS.Train_Marine_quick.id):
             # Spawn Marines
@@ -281,7 +281,7 @@ class TerranAgent(base_agent.BaseAgent):
       if self.unit_type_is_selected(obs, units.Terran.SCV):
         # If it is possible to build a Engineering Bay
         if self.can_do(obs, actions.FUNCTIONS.Build_EngineeringBay_screen.id):
-          # Get [x, y] values randomly from 0 to 60 in both cases
+          # Get [x, y] values randomly from 0 to 83 in both cases
           x = random.randint(0, 83)
           y = random.randint(0, 83)
           # Build the Engineering Bay on the random coordinates

@@ -1,4 +1,4 @@
-# SC2Agent
+# Terran SCII Agent
 
 *This is a hand-in project on the Agent topic made by Fernando Vargas Álvarez.*
 
