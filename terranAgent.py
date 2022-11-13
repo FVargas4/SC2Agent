@@ -1,4 +1,3 @@
-
 """ Import necessary libraries """
 
 from pysc2.agents import base_agent
@@ -134,10 +133,10 @@ class TerranAgent(base_agent.BaseAgent):
   Function gather_vespene_gas(self, observation object)
 
     Function that makes the SCVs gather vespene gas from the refinery to the command center.
-    self (class): Allows the agent to access itself.
-    obs (object): Object that acts as the sensors of the agent.
   ________________________________________________________________________
   
+    self (class): Allows the agent to access itself.
+    obs (object): Object that acts as the sensors of the agent.
     refineries (array): Array that contain the fineries in the screen.
   
   """
@@ -154,7 +153,7 @@ class TerranAgent(base_agent.BaseAgent):
       if refinery['assigned_harvesters'] < 3:
         # If the SCV is selected 
         if self.unit_type_is_selected(obs, units.Terran.SCV):
-          # If the observation objects have values (there are objects selected [multi or single]) 
+          # If the observation objects selects (multi or single) 
           if len(obs.observation.single_select) < 2 and len(obs.observation.multi_select) < 2:
             # If the agent can do "harvest_gather" function
             if self.can_do(obs,actions.FUNCTIONS.Harvest_Gather_screen.id):
@@ -163,6 +162,7 @@ class TerranAgent(base_agent.BaseAgent):
 
         # Find the SCVs and store it in variable scvs         
         scvs = self.get_units_by_type(obs, units.Terran.SCV)
+
         # If the scvs array is not empty
         if len(scvs) > 0 :
           # Choose a random SCV
@@ -192,18 +192,38 @@ class TerranAgent(base_agent.BaseAgent):
         print(" \n means\n ", xmean, ymean)                        
         if xmean <= 31 and ymean <= 31:
             #set pair of coordintates
-            self.attack_coordinates = (49,49)
+            self.attack_coordinates = [49,49]
         else:
             #set pair of coordintates
-            self.attack_coordinates = (12,16)
-    print('SCV:' + str(self.unit_type_is_selected(obs, units.Terran.SCV)))
-    print('Marine:' + str(self.unit_type_is_selected(obs, units.Terran.Marine)))
-    print('Barrack:' + str(self.unit_type_is_selected(obs, units.Terran.Barracks)))
-    """Create attack conditions"""
-    # Check if there are marine, if there is no marine build one.
+            self.attack_coordinates = [12,16]
+
+    # Obtain quantity of minerals
+    minerals = obs.observation.player.minerals
+
+    # Get Supply Depot as terrenian. Minerals available needed.                          
+    terranian = self.get_units_by_type(obs, units.Terran.SupplyDepot)
+
+    # Check if there are marine, if there is no marine build one. Minerals available needed.
     marines = self.get_units_by_type(obs, units.Terran.Marine)
+
+    # Check if there are barracks, if there is no barraks build one. Minerals available needed.
+    barracks = self.get_units_by_type(obs, units.Terran.Barracks)
+    
+    # Check if there are barracks, if there is no barraks build one. Minerals available needed.
+    enbase = self.get_units_by_type(obs, units.Terran.EngineeringBay)
+
+    # Select SCV units ing-game 
+    scvs = self.get_units_by_type(obs, units.Terran.SCV)
+
+    # Call GVG function to gather Vespene Gas
+    g_refinery = self.gather_vespene_gas(obs)
+
+    # Call BR function to build Refinary
+    b_refinery = self.build_refinery(obs)
+
+    """Create attack conditions"""
+
     # If there are at least 10 marines
-    print(marines)
     if len(marines) >= 15:
       # Select Marines
       if self.unit_type_is_selected(obs, units.Terran.Marine):
@@ -215,16 +235,10 @@ class TerranAgent(base_agent.BaseAgent):
       if self.can_do(obs, actions.FUNCTIONS.select_army.id):
         # Select the army (marines)
         return actions.FUNCTIONS.select_army('select')
-
-    # Obtain quantity of minerals
-    minerals = obs.observation.player.minerals
-    print(minerals)
+    
     """Supply Depot (spawner) conditions"""
-    # Get Supply Depot as terrenian. Minerals available needed.
-    terranian = self.get_units_by_type(obs, units.Terran.SupplyDepot)
-    print(terranian)                          
     # If there are not at least 2 supply depots and the agent has 100 materials
-    if len(terranian) < 1 and minerals >= 100:
+    if len(terranian) < 2 and minerals >= 100:
       # If the unit selected is a SCV
       if self.unit_type_is_selected(obs, units.Terran.SCV):
         # If it is possible to build a Supply Depot
@@ -233,12 +247,9 @@ class TerranAgent(base_agent.BaseAgent):
           x = random.randint(0, 83)
           y = random.randint(0, 83)
           # Build the supply depot on the random coordinates
-          return actions.FUNCTIONS.Build_SupplyDepot_screen('now', (x,y))
-
+          return actions.FUNCTIONS.Build_SupplyDepot_screen('now', ( x, y))
+      
     """Building barracks conditions"""
-    # Check if there are barracks, if there is no barraks build one. Minerals available needed.
-    barracks = self.get_units_by_type(obs, units.Terran.Barracks)
-    print(barracks)
     # If there are not at least 3 barracks and the agent has 150 materials
     if len (barracks) < 3 and minerals >= 150:
       # If the unit selected is a SCV
@@ -251,60 +262,49 @@ class TerranAgent(base_agent.BaseAgent):
           # Build the supply depot on the barracks coordinates
           return actions.FUNCTIONS.Build_Barracks_screen('now', ( x, y))
 
-    print(barracks)
-    """Training marines conditions"""
-    # If there are 2 barracks
-    if len(barracks) == 2:
-      # If the unit selected is a Barrak
-      print(barracks)
-      if self.unit_type_is_selected(obs, units.Terran.Barracks):
-        # Check if there are marine, if there is no marine build one.
-        marines = self.get_units_by_type(obs, units.Terran.Marine)
-        # If there are less than 10 marines
-        print(marines)
-        if len(marines) <= 15:
-          print(self.can_do(obs, actions.FUNCTIONS.Train_Marine_quick.id))
-          # If it is possible to build a train (create) mairnes
-          if self.can_do(obs, actions.FUNCTIONS.Train_Marine_quick.id):
-            # Spawn Marines
-            return actions.FUNCTIONS.Train_Marine_quick('now')
-
     """Build Engineering Bay conditions"""
-    # Check if there are barracks, if there is no barraks build one.
-    enbase = self.get_units_by_type(obs, units.Terran.EngineeringBay)
-    print(enbase)
     # If there are not at least 2 engineering bay and the agent has 125 materials
     if len (enbase) < 2 and minerals >= 125:
       # If the unit selected is a SCV
       if self.unit_type_is_selected(obs, units.Terran.SCV):
         # If it is possible to build a Engineering Bay
         if self.can_do(obs, actions.FUNCTIONS.Build_EngineeringBay_screen.id):
-          # Get [x, y] values randomly from 0 to 83 in both cases
+          # Get [x, y] values randomly from 0 to 60 in both cases
           x = random.randint(0, 83)
           y = random.randint(0, 83)
           # Build the Engineering Bay on the random coordinates
           return actions.FUNCTIONS.Build_EngineeringBay_screen('now', ( x, y))
+     
+    """Training marines conditions"""
+    # If there are not at least 2 engineering bay and the agent has 125 materials
+    if len(barracks) >= 3:
+      # If the unit selected is a Barrak
+      if self.unit_type_is_selected(obs, units.Terran.Barracks):
+        # If there are less than 10 marines
+        if len(marines) <= 15:
+          # If it is possible to build a train (create) mairnes
+          if self.can_do(obs, actions.FUNCTIONS.Train_Marine_quick.id):
+            # Spawn Marines
+            return actions.FUNCTIONS.Train_Marine_quick('now')
+      # Choose a random barrack
+      b = random.choice(barracks)
+      # Select point at barracks coordinates
+      return actions.FUNCTIONS.select_point('select_all_type', (b.x, b.y))
 
     """Building refinery conditions"""
-    # Call BR function to build Refinary
-    b_refinery = self.build_refinery(obs)
     # if b_refinery runs correctly, return it  
     if b_refinery:
         return b_refinery
-
+    
     """Gathering gas from refinery conditions"""
-    # Call GVG function to gather Vespene Gas
-    g_refinery = self.gather_vespene_gas(obs)
     # if g_refinery runs correctly, return it  
     if g_refinery:
           return g_refinery
 
-    # Select SCV units ing-game 
-    scvs = self.get_units_by_type(obs, units.Terran.SCV)
     # If the scvs array is not empty
-    if len(barracks) > 0:
+    if len(scvs) > 0:
         # Choose a random SCV
-        scv = random.choice(barracks)
+        scv = random.choice(scvs)
         # Tell the agent to select all SCVs
         return actions.FUNCTIONS.select_point("select_all_type", (scv.x, scv.y))
 
@@ -350,8 +350,8 @@ def main(unused_argv):
     pass
 
   # If the agent trys to click on coordinates outside of the actual screen.
-  except ValueError or IndexError:
-    print('Agent Crashed')
+  except ValueError:
+    print('Crash')
     pass
 # Tells the interpreter to run the main function when this file is run in Python.
 if __name__ == "__main__":
