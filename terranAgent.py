@@ -222,7 +222,6 @@ class TerranAgent(base_agent.BaseAgent):
     b_refinery = self.build_refinery(obs)
 
     """Create attack conditions"""
-
     # If there are at least 10 marines
     if len(marines) >= 15:
       # Select Marines
