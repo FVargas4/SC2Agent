@@ -4,6 +4,16 @@
 
 On this folder you will find the agent file (*terranAgent.py*), which if run correctly (with the proper [pySC2](https://github.com/deepmind/pysc2) library and with the game Starcraft 2 installed [*with the pySC2 maps in the game's installation folder*]) will run an agent that plays such game in the selected map. 
 
+## Context
+
+PySC2 is a library made bay DeepMind from Google company, it creates agents that interact with StarCraft II game. Some classes ago, professor Benji shared an agent file that can play the basic dynamics of the game like build constructions, command attacks, and gather materials. 
+
+This agent uses the Zerg race in-game and it's strategy can be viewed in the StarCraft Viewer (Program that gives insights on what the agent is doing in-game):
+
+![alt text](img/basicAgent.png)
+
+## Beggining Line
+
 The agent will use the race Terran for playing and it's strategy at the beggining of this project is the following:
 
 - Gather minerals to make an Supply Depot in order to use SVC, which are the "builders" of the terran race.
