@@ -1,4 +1,3 @@
-
 """ Import necessary libraries """
 
 from pysc2.agents import base_agent
@@ -222,44 +221,6 @@ class TerranAgent(base_agent.BaseAgent):
     # Call BR function to build Refinary
     b_refinery = self.build_refinery(obs)
 
-    """Supply Depot (spawner) conditions"""
-    # If there are not at least 2 supply depots and the agent has 100 materials
-    if len(terranian) < 2 and minerals >= 100:
-      # If the unit selected is a SCV
-      if self.unit_type_is_selected(obs, units.Terran.SCV):
-        # If it is possible to build a Supply Depot
-        if self.can_do(obs, actions.FUNCTIONS.Build_SupplyDepot_screen.id):
-          # Get [x, y] values randomly from 0 to 83 in both cases
-          x = random.randint(0, 83)
-          y = random.randint(0, 83)
-          # Build the supply depot on the random coordinates
-          return actions.FUNCTIONS.Build_SupplyDepot_screen('now', ( x, y))
-
-    """Building barracks conditions"""
-    # If there are not at least 3 barracks and the agent has 150 materials
-    if len (barracks) < 3 and minerals >= 150:
-      # If the unit selected is a SCV
-      if self.unit_type_is_selected(obs, units.Terran.SCV):
-        # If it is possible to build a Barrak
-        if self.can_do(obs, actions.FUNCTIONS.Build_Barracks_screen.id):
-          # Get [x, y] values randomly from 0 to 83 in both cases
-          x = random.randint(0, 83)
-          y = random.randint(0, 83)
-          # Build the supply depot on the barracks coordinates
-          return actions.FUNCTIONS.Build_Barracks_screen('now', ( x, y))
-
-    """Training marines conditions"""
-    # If there are not at least 2 engineering bay and the agent has 125 materials
-    if len(barracks) >= 3:
-      # If the unit selected is a Barrak
-      if self.unit_type_is_selected(obs, units.Terran.Barracks):
-        # If there are less than 10 marines
-        if len(marines) <= 10:
-          # If it is possible to build a train (create) mairnes
-          if self.can_do(obs, actions.FUNCTIONS.Train_Marine_quick.id):
-            # Spawn Marines
-            return actions.FUNCTIONS.Train_Marine_quick('now')
-            
     """Create attack conditions"""
     # If there are at least 10 marines
     if len(marines) >= 15:
@@ -273,6 +234,32 @@ class TerranAgent(base_agent.BaseAgent):
       if self.can_do(obs, actions.FUNCTIONS.select_army.id):
         # Select the army (marines)
         return actions.FUNCTIONS.select_army('select')
+    
+    """Supply Depot (spawner) conditions"""
+    # If there are not at least 2 supply depots and the agent has 100 materials
+    if len(terranian) < 2 and minerals >= 100:
+      # If the unit selected is a SCV
+      if self.unit_type_is_selected(obs, units.Terran.SCV):
+        # If it is possible to build a Supply Depot
+        if self.can_do(obs, actions.FUNCTIONS.Build_SupplyDepot_screen.id):
+          # Get [x, y] values randomly from 0 to 83 in both cases
+          x = random.randint(0, 83)
+          y = random.randint(0, 83)
+          # Build the supply depot on the random coordinates
+          return actions.FUNCTIONS.Build_SupplyDepot_screen('now', ( x, y))
+      
+    """Building barracks conditions"""
+    # If there are not at least 3 barracks and the agent has 150 materials
+    if len (barracks) < 3 and minerals >= 150:
+      # If the unit selected is a SCV
+      if self.unit_type_is_selected(obs, units.Terran.SCV):
+        # If it is possible to build a Barrak
+        if self.can_do(obs, actions.FUNCTIONS.Build_Barracks_screen.id):
+          # Get [x, y] values randomly from 0 to 83 in both cases
+          x = random.randint(0, 83)
+          y = random.randint(0, 83)
+          # Build the supply depot on the barracks coordinates
+          return actions.FUNCTIONS.Build_Barracks_screen('now', ( x, y))
 
     """Build Engineering Bay conditions"""
     # If there are not at least 2 engineering bay and the agent has 125 materials
@@ -286,7 +273,18 @@ class TerranAgent(base_agent.BaseAgent):
           y = random.randint(0, 83)
           # Build the Engineering Bay on the random coordinates
           return actions.FUNCTIONS.Build_EngineeringBay_screen('now', ( x, y))
-          
+     
+    """Training marines conditions"""
+    # If there are not at least 2 engineering bay and the agent has 125 materials
+    if len(barracks) >= 3:
+      # If the unit selected is a Barrak
+      if self.unit_type_is_selected(obs, units.Terran.Barracks):
+        # If there are less than 10 marines
+        if len(marines) <= 15:
+          # If it is possible to build a train (create) mairnes
+          if self.can_do(obs, actions.FUNCTIONS.Train_Marine_quick.id):
+            # Spawn Marines
+            return actions.FUNCTIONS.Train_Marine_quick('now')
       # Choose a random barrack
       b = random.choice(barracks)
       # Select point at barracks coordinates
@@ -316,7 +314,7 @@ class TerranAgent(base_agent.BaseAgent):
   
   Function main(unused argument)
     Principal code in the file. It is the code that runs to open the game, create the agents, let the agents 
-    play and then restarts the agents once one of them is defeated. Conditional on line 350 only tells the 
+    play and then restarts the agents once one of them is defeated. Conditional on line 356 only tells the 
     interpreter to run the main function when this file is run in Python.
   
   """
