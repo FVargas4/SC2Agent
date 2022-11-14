@@ -314,7 +314,7 @@ class TerranAgent(base_agent.BaseAgent):
   
   Function main(unused argument)
     Principal code in the file. It is the code that runs to open the game, create the agents, let the agents 
-    play and then restarts the agents once one of them is defeated. Conditional on line 350 only tells the 
+    play and then restarts the agents once one of them is defeated. Conditional on line 356 only tells the 
     interpreter to run the main function when this file is run in Python.
   
   """
