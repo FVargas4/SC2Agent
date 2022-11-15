@@ -65,6 +65,7 @@ class ProtossAgent(base_agent.BaseAgent):
         vespene = obs.observation.player.vespene
         zealots = self.get_units_by_type(obs, units.Protoss.Zealot)
         sentries = self.get_units_by_type(obs, units.Protoss.Sentry)
+        probes = self.get_units_by_type(obs, units.Protoss.Probe)
 
 
         if len(zealots) >= 7:
@@ -84,11 +85,17 @@ class ProtossAgent(base_agent.BaseAgent):
             if self.can_do(obs, actions.FUNCTIONS.select_army.id):
                 return actions.FUNCTIONS.select_army("select")
             
+        #Pylon
+        gates = self.get_units_by_type(obs, units.Protoss.Gateway)
+        cybernetic = self.get_units_by_type(obs, units.Protoss.CyberneticsCore)
+        if len(gates) == 2 and minerals >= 150 and len(cybernetic) == 0:
+            if self.unit_type_is_selected(obs, units.Protoss.Probe):
+                if self.can_do(obs, actions.FUNCTIONS.Build_CyberneticsCore_screen.id):
+                    x = random.randint(0, 83)
+                    y = random.randint(0, 83)
+                    return actions.FUNCTIONS.Build_CyberneticsCore_screen("now", (x, y))
+        
         #Select Probe units 
-        
-        probes = self.get_units_by_type(obs, units.Protoss.Probe)
-        print(len(probes))
-        
         if len(probes) > 0:
             probe = random.choice(probes)
             return actions.FUNCTIONS.select_point("select_all_type", (probe.x, probe.y))
