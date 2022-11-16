@@ -13,17 +13,14 @@ import random
 
 """
 
-  Hand-in I: StarCraft II Terran Agent
+  Hand-in II: StarCraft II: Agents clash
     Author: Fernando Vargas
 
     :)
   ________________________________________________________________________
 
-  TerranAgent (class): Agent object that contains all needed methods to win 
-  vs an easy level Agent.
-
-  main (class): Main code that creates and activates both Terran and an easy
-  level (Random Race) Agent.
+  main (class): Main code that creates, runs and confronts the terran and the protoss
+                Agents against each other.
   
 """
 def main(unused_argv):

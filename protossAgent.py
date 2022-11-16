@@ -73,6 +73,52 @@ class ProtossAgent(base_agent.BaseAgent):
                     x = random.randint(0, 83)
                     y = random.randint(0, 83)
                     return actions.FUNCTIONS.Build_CyberneticsCore_screen("now", (x, y))
+        pylons = self.get_units_by_type(obs, units.Protoss.Pylon)
+        if len(pylons) < 4 and minerals >= 100:
+            if self.unit_type_is_selected(obs, units.Protoss.Probe):
+                if self.can_do(obs, actions.FUNCTIONS.Build_Pylon_screen.id):
+                    x = random.randint(0, 83)
+                    y = random.randint(0, 83)
+                    return actions.FUNCTIONS.Build_Pylon_screen("now", (x, y))
+
+        #Gateways
+        #gates = self.get_units_by_type(obs, units.Protoss.Gateway)
+        if len(gates) < 2 and minerals >= 150:
+            if self.unit_type_is_selected(obs, units.Protoss.Probe):
+                if self.can_do(obs, actions.FUNCTIONS.Build_Gateway_screen.id):
+                    x = random.randint(0, 83)
+                    y = random.randint(0, 83)
+                    return actions.FUNCTIONS.Build_Gateway_screen("now", (x, y))
+
+        gas = self.get_units_by_type(obs, units.Protoss.Assimilator)
+        if len(gates) == 2 and minerals >= 75 and len(gas) == 0:
+            if self.unit_type_is_selected(obs, units.Protoss.Probe):
+                if self.can_do(obs, actions.FUNCTIONS.Build_Assimilator_screen.id):
+                    x = random.randint(0, 83)
+                    y = random.randint(0, 83)
+                return actions.FUNCTIONS.Build_Assimilator_screen("now", (x, y))
+        
+
+        #Units                   
+        if len(gates) == 2 and minerals>=100:
+            if self.unit_type_is_selected(obs, units.Protoss.Gateway):
+                zealots = self.get_units_by_type(obs, units.Protoss.Zealot)
+                if len(zealots) <= 7:
+                    if self.can_do(obs, actions.FUNCTIONS.Train_Zealot_quick.id):
+                        return actions.FUNCTIONS.Train_Zealot_quick("now")
+            else:            
+                z = random.choice(gates)
+                return actions.FUNCTIONS.select_point("select_all_type", (z.x, z.y))
+                 
+        if len(cybernetic) == 1 and vespene>=100 and minerals>=50:
+            if self.unit_type_is_selected(obs, units.Protoss.Gateway):
+                sentry = self.get_units_by_type(obs, units.Protoss.Sentry)
+                if len(sentry) <= 1:
+                    if self.can_do(obs, actions.FUNCTIONS.Train_Sentry_quick.id):
+                        return actions.FUNCTIONS.Train_Sentry_quick("now")
+
+            z = random.choice(gates)
+            return actions.FUNCTIONS.select_point("select_all_type", (z.x, z.y))
         
         #Select Probe units 
         if len(probes) > 0:
