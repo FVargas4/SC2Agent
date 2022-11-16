@@ -49,25 +49,25 @@ def main(unused_argv):
         
         if ag1 == "1":
             firstAgent = TerranAgent()
-            command1 = command1 + "terran"
+            command1 = sc2_env.Race.terran
         elif ag1 == '2':
             firstAgent = ProtossAgent()
-            command1 = command1 + "protoss"
+            command1 = sc2_env.Race.protoss
         elif ag1 == '3':
             firstAgent = ZergAgent()
-            command1 = command1 + "zerg"
+            command1 = sc2_env.Race.zerg
         elif ag1 == '4':
             print('N/A')
         
         if ag2 == '1':
             secondAgent = TerranAgent()
-            command2 = command2 + "terran"
+            command2 = sc2_env.Race.terran
         elif ag2 == '2':
             secondAgent = ProtossAgent()
-            command2 = command2 + "protoss"
+            command2 = sc2_env.Race.protoss
         elif ag2 == '3':
             secondAgent = ZergAgent()
-            command2 = command2 + "zerg"
+            command2 = sc2_env.Race.zerg
         elif ag2 == '4':
             print('N/A')
         print(firstAgent, secondAgent)
@@ -77,8 +77,8 @@ def main(unused_argv):
       while True:
         with sc2_env.SC2Env(
             map_name="Simple64",
-            players=[sc2_env.Agent(sc2_env.Race.terran),
-                     sc2_env.Agent(sc2_env.Race.zerg)
+            players=[sc2_env.Agent(command1),
+                     sc2_env.Agent(command2)
                     #  sc2_env.Bot(sc2_env.Race.random, sc2_env.Difficulty.very_easy)
                      ],
             agent_interface_format=features.AgentInterfaceFormat(
