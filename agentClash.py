@@ -37,25 +37,33 @@ def main(unused_argv):
     ag2 = str(input('Which agent goes second? ', ))
 
     if ag1.isdigit() and ag2.isdigit():
+        command1 = "sc2_env.Race."
+        command2 = "sc2_env.Race."
         if ag1 == ag2:
             print('Same agent')
             breakpoint
         
         if ag1 == 1:
             firstAgent = "agent"
+            command1 = command1 + "terran"
         elif ag1 == 2:
             firstAgent = "agent2"
+            command1 = command1 + "protoss"
         elif ag1 == 3:
             firstAgent = "agent3"
+            command1 = command1 + "zerg"
         elif ag1 == 4:
             print('N/A')
         
         if ag2 == 1:
             secondAgent = "agent"
+            command2 = command2 + "terran"
         elif ag2 == 2:
             secondAgent = "agent2"
+            command2 = command2 + "protoss"
         elif ag2 == 3:
             secondAgent = "agent3"
+            command2 = command2 + "zerg"
         elif ag2 == 4:
             print('N/A')
         
@@ -65,8 +73,8 @@ def main(unused_argv):
       while True:
         with sc2_env.SC2Env(
             map_name="Simple64",
-            players=[sc2_env.Agent(sc2_env.Race.terran),
-                     sc2_env.Agent(sc2_env.Race.protoss)
+            players=[sc2_env.Agent(command1),
+                     sc2_env.Agent(command2)
                     #  sc2_env.Bot(sc2_env.Race.random, sc2_env.Difficulty.very_easy)
                      ],
             agent_interface_format=features.AgentInterfaceFormat(
