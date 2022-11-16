@@ -73,6 +73,7 @@ class ProtossAgent(base_agent.BaseAgent):
                     x = random.randint(0, 83)
                     y = random.randint(0, 83)
                     return actions.FUNCTIONS.Build_CyberneticsCore_screen("now", (x, y))
+                    
         pylons = self.get_units_by_type(obs, units.Protoss.Pylon)
         if len(pylons) < 4 and minerals >= 100:
             if self.unit_type_is_selected(obs, units.Protoss.Probe):

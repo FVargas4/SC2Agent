@@ -199,6 +199,9 @@ class TerranAgent(base_agent.BaseAgent):
 
     # Obtain quantity of minerals
     minerals = obs.observation.player.minerals
+    
+    # Obtain quantity of minerals
+    vespene = obs.observation.player.vespene
 
     # Get Supply Depot as terrenian. Minerals available needed.                          
     terranian = self.get_units_by_type(obs, units.Terran.SupplyDepot)
@@ -289,6 +292,17 @@ class TerranAgent(base_agent.BaseAgent):
       b = random.choice(barracks)
       # Select point at barracks coordinates
       return actions.FUNCTIONS.select_point('select_all_type', (b.x, b.y))
+
+
+    """
+      Attempt to make the terrans upgrades. The SCV goes to the Engineering bay to try to upgrade but does nothing.
+    
+    """
+    if len(enbase) == 1 and vespene>=125 and minerals>=200:
+      if self.unit_type_is_selected(obs, units.Terran.EngineeringBay):
+                if len(scvs) <= 1:
+                    if self.can_do(obs, actions.FUNCTIONS.Research_TerranInfantryWeaponsLevel1_quick.id):
+                        return actions.FUNCTIONS.Research_TerranInfantryWeaponsLevel1_quick("now")
 
     """Building refinery conditions"""
     # if b_refinery runs correctly, return it  
