@@ -36,45 +36,49 @@ def main(unused_argv):
     ag1 = str(input('Which agent goes first? (StarCraft Viewer available) ', ))
     ag2 = str(input('Which agent goes second? ', ))
 
+    print(ag1.isdigit(), type(ag2))
+
     if ag1.isdigit() and ag2.isdigit():
+        firstAgent = None
+        secondAgent = None 
         command1 = "sc2_env.Race."
         command2 = "sc2_env.Race."
         if ag1 == ag2:
             print('Same agent')
             breakpoint
         
-        if ag1 == 1:
-            firstAgent = "agent"
+        if ag1 == "1":
+            firstAgent = TerranAgent()
             command1 = command1 + "terran"
-        elif ag1 == 2:
-            firstAgent = "agent2"
+        elif ag1 == '2':
+            firstAgent = ProtossAgent()
             command1 = command1 + "protoss"
-        elif ag1 == 3:
-            firstAgent = "agent3"
+        elif ag1 == '3':
+            firstAgent = ZergAgent()
             command1 = command1 + "zerg"
-        elif ag1 == 4:
+        elif ag1 == '4':
             print('N/A')
         
-        if ag2 == 1:
-            secondAgent = "agent"
+        if ag2 == '1':
+            secondAgent = TerranAgent()
             command2 = command2 + "terran"
-        elif ag2 == 2:
-            secondAgent = "agent2"
+        elif ag2 == '2':
+            secondAgent = ProtossAgent()
             command2 = command2 + "protoss"
-        elif ag2 == 3:
-            secondAgent = "agent3"
+        elif ag2 == '3':
+            secondAgent = ZergAgent()
             command2 = command2 + "zerg"
-        elif ag2 == 4:
+        elif ag2 == '4':
             print('N/A')
-        
-        
+        print(firstAgent, secondAgent)
+        # command1 = "sc2_env.Race."
 
     try:
       while True:
         with sc2_env.SC2Env(
             map_name="Simple64",
-            players=[sc2_env.Agent(command1),
-                     sc2_env.Agent(command2)
+            players=[sc2_env.Agent(sc2_env.Race.terran),
+                     sc2_env.Agent(sc2_env.Race.zerg)
                     #  sc2_env.Bot(sc2_env.Race.random, sc2_env.Difficulty.very_easy)
                      ],
             agent_interface_format=features.AgentInterfaceFormat(

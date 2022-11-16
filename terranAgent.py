@@ -334,14 +334,12 @@ class TerranAgent(base_agent.BaseAgent):
   """
 def main(unused_argv):
   agent = TerranAgent()
-  agent2 = ProtossAgent()
   try:
     while True:
       with sc2_env.SC2Env(
           map_name="Simple64",
           players=[sc2_env.Agent(sc2_env.Race.terran),
-                   sc2_env.Agent(sc2_env.Race.protoss)
-                  #  sc2_env.Bot(sc2_env.Race.random, sc2_env.Difficulty.very_easy)
+                    sc2_env.Bot(sc2_env.Race.random, sc2_env.Difficulty.very_easy)
                    ],
           agent_interface_format=features.AgentInterfaceFormat(
               feature_dimensions=features.Dimensions(screen=84, minimap=64),
@@ -349,18 +347,17 @@ def main(unused_argv):
           step_mul=16,
           game_steps_per_episode=0,
           visualize=True) as env:
-          run_loop.run_loop([agent,agent2], env)
           
-        # agent.setup(env.observation_spec(), env.action_spec())
+        agent.setup(env.observation_spec(), env.action_spec())
         
-        # timesteps = env.reset()
-        # agent.reset()
+        timesteps = env.reset()
+        agent.reset()
         
-        # while True:
-        #   step_actions = [agent.step(timesteps[0])]
-        #   if timesteps[0].last():
-        #     break
-        #   timesteps = env.step(step_actions)
+        while True:
+          step_actions = [agent.step(timesteps[0])]
+          if timesteps[0].last():
+            break
+          timesteps = env.step(step_actions)
       
   # Interrupt the code from running using ctrl + C on the terminal the file is being run at.
   except KeyboardInterrupt:
