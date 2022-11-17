@@ -7,6 +7,7 @@ from absl import app
 from terranAgent import TerranAgent
 from protossAgent import ProtossAgent
 from hydras import ZergAgent
+from protossOlmos import Protoss_Agent
 import random
 
 
@@ -53,7 +54,8 @@ def main(unused_argv):
             firstAgent = ZergAgent()
             command1 = sc2_env.Race.zerg
         elif ag1 == '4':
-            print('N/A')
+            firstAgent = Protoss_Agent()
+            command1 = sc2_env.Race.protoss
         
         # Check for the agent number for the second agent
         if ag2 == '1':
@@ -67,7 +69,8 @@ def main(unused_argv):
             secondAgent = ZergAgent()
             command2 = sc2_env.Race.zerg
         elif ag2 == '4':
-            print('N/A')
+            secondAgent = Protoss_Agent()
+            command2 = sc2_env.Race.protoss
         print(firstAgent, secondAgent)
         # command1 = "sc2_env.Race."
     # If any of the inputs is not a number

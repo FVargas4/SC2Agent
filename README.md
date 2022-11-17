@@ -1,6 +1,6 @@
 # SCII: Agents clash
 
-Second Hand-in: Use the library pySC2 to make two agents battle each other. Currently I've built two agents, a [terran agent](terran.md) (which was Hand-in I) and a [protoss agent](protoss.md) (part of Hand-in II). 
+Second Hand-in objective : Use the library pySC2 to make two agents battle each other. Currently I've built two agents, a [terran agent](terran.md) (which was Hand-in I) and a [protoss agent](protoss.md) (part of Hand-in II). 
 ### How to use it:
 
 Use the following command to see the two agents mentioned above battle:
@@ -46,7 +46,7 @@ There are many differences and different ways to play according to which race do
             Attack Soldiers
         </td>
         <td>
-            Zealot
+            Zealot, Sentry
         </td>
         <td>
             Marines
@@ -109,10 +109,10 @@ For making things fun, I've included Benji's hydra agent and Olmos' protoss agen
 
 When run, it will ask for the number of the Agent you want to choose for the first and second player. The numbers are the following:
 
-- Terran Agent([1](terranAgent.py))
-- Protoss Agent([2](protossAgent.py))
-- Zerg Agent - Hydras([3](hydras.py))
-- Protoss Agent - Yizu5([4](not available yet))
+1. [Terran Agent](terranAgent.py)
+2. [Protoss Agent](protossAgent.py)
+3. [Zerg Agent - Hydras](hydras.py)
+4. [Protoss Agent-Yizu5](protossOlmos.py)
 
 
 ![clash](img/clash.png)
