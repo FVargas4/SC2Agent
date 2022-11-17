@@ -11,11 +11,15 @@ Run the following command to run the agent against a very easy agent bot:
 
 PySC2 is a library made by DeepMind from Google company, it creates agents that interact  with StarCraft II game. Some classes ago, professor Benji shared an agent file that can play the basic dynamics of the game like build constructions, command attacks, and gather materials. 
 
-This agent uses the Zerg race in-game and it's strategy can be viewed in the StarCraft Viewer (Program that gives insights on what the agent is doing in-game):
-
-![alt text](img/basicAgent.png)
-
 ## Agent rundown
 
-This agent uses the Protoss race, which has a very similar functionality to its terran counter part in this same projects.
+This agent uses the Protoss race, which has a very similar functionality to its terran counter part in this same projects. But looking more into the documentation i could do some kind of upgrade:
+
+- Build gateways to train Zealots and Sentries. Also order them to attack the enemy when there is at least 7 Zealots and one Sentry.
+- Use Probes to build cibernetic cores, gateways, pylons and assimilator to train the army and gather vespene gas.
+
+![alt text](img/protossAgent.png)
+I
+
+Get the full view of the agent's logic functioning on the [Agent Diagram](img/Diagrama2.pdf)
 
