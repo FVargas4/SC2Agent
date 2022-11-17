@@ -1,6 +1,6 @@
 # SCII: Agents clash
 
-Second Hand-in: Use the library pySC2 to make two agents battle each other. For the time being there are two agents, [terran agent](terran.md) (which was Hand-in I) and a [protoss agent](protoss.md) (part of Hand-in II). 
+Second Hand-in: Use the library pySC2 to make two agents battle each other. Currently I've built two agents, a [terran agent](terran.md) (which was Hand-in I) and a [protoss agent](protoss.md) (part of Hand-in II). 
 ### How to use it:
 
 Use the following command to see the two agents mentioned above battle:
@@ -91,7 +91,17 @@ For each of the agents made by me, there is a documentation. Check the [terran a
 
 This final part of the project takes the two agents built and confronts them in battle. This is possible by making a third file (in this case called [terranVsProtoss.py](terranVsProtoss.py)) which imports both agent classes and uses them to have a battle using the run_loop env function inside the pySC2 library. 
 
-On the agents side, we can only see the first agent selected (in this case Terran) on the StarCraft Viewer tool, but two game windows will load:
+On the agents side, we can only see the first agent selected (in this case Terran) on the StarCraft Viewer tool, but two game windows will load
+.
+
+Player 1's view (With Starcraft Viewer tool available):
+
+![player1](img/player1.png)
+Player 2's view:
+
+![player2](img/player2.png)
+
+## Extra battles
 
 For making things fun, I've included Benji's hydra agent and Olmos' protoss agent so we can clash between agents. To run this mode run the command:
 
@@ -102,4 +112,7 @@ When run, it will ask for the number of the Agent you want to choose for the fir
 - Terran Agent([1](terranAgent.py))
 - Protoss Agent([2](protossAgent.py))
 - Zerg Agent - Hydras([3](hydras.py))
-- Protoss Agent - Yizu5([4](not done jet))
+- Protoss Agent - Yizu5([4](not available yet))
+
+
+![clash](img/clash.png)

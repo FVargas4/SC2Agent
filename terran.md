@@ -2,6 +2,8 @@
 
 *This is a hand-in project on the Agent topic made by Fernando Vargas Álvarez.*
 
+[Home](README.md) / Terran Agent
+
 On this folder you will find the agent file (*terranAgent.py*), which if run correctly (with the proper [pySC2](https://github.com/deepmind/pysc2) library and with the game Starcraft 2 installed [*with the pySC2 maps in the game's installation folder*]) will run an agent that plays such game in the selected map. 
 
 Run the following command to run the agent against a very esay agent bot:

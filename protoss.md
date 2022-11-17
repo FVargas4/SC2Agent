@@ -2,6 +2,8 @@
 
 *This is a hand-in project on the Agent topic made by Fernando Vargas Álvarez*
 
+[Home](README.md) / Protoss Agent
+
 On this folder you will find the agent file [protosAgent.py](protosAgent.py), which if run in the correct settings (with python, [pySC2](https://github.com/deepmind/pysc2) library and StarCraft 2 installed)
 
 Run the following command to run the agent against a very easy agent bot:
@@ -21,5 +23,5 @@ This agent uses the Protoss race, which has a very similar functionality to its 
 ![alt text](img/protossAgent.png)
 I
 
-Get the full view of the agent's logic functioning on the [Agent Diagram](img/Diagrama2.pdf)
+Get the full view of the agent's logic functioning on the [Agent Diagram](img/Diagram2.pdf)
 
