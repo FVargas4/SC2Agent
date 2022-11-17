@@ -91,8 +91,8 @@ class ProtossAgent(base_agent.BaseAgent):
                     y = random.randint(0, 83)
                     return actions.FUNCTIONS.Build_Gateway_screen("now", (x, y))
 
-        gas = self.get_units_by_type(obs, units.Protoss.Assimilator)
-        if len(gates) == 2 and minerals >= 75 and len(gas) == 0:
+        assimilator = self.get_units_by_type(obs, units.Protoss.Assimilator)
+        if len(gates) == 2 and minerals >= 75 and len(assimilator) == 0:
             if self.unit_type_is_selected(obs, units.Protoss.Probe):
                 if self.can_do(obs, actions.FUNCTIONS.Build_Assimilator_screen.id):
                     x = random.randint(0, 83)
