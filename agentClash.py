@@ -25,29 +25,25 @@ import random
   
 """
 def main(unused_argv):
-    agent = TerranAgent()
-    agent2 = ProtossAgent()
-    agent3 = ZergAgent()
-    agent4 = None
-
+    """
+        Print greetings and the Agents with their number
+    """
     print(
-        "Welcome to Clash of Agents!!!\nTerran Agent(1)\nProtoss Agent(2)\nZerg Agent - Hydras(3)\nProtoss Agent - Yizu5(4)"
+        "Welcome to Clash of Agents!!!\nChoose your agents!!!\nTerran Agent(1)\nProtoss Agent(2)\nZerg Agent - Hydras(3)\nProtoss Agent - Yizu5(4)"
     )
+    # Get the two agent numbers
     ag1 = str(input('Which agent goes first? (StarCraft Viewer available) ', ))
     ag2 = str(input('Which agent goes second? ', ))
 
-    print(ag1.isdigit(), type(ag2))
-
+    # Conditional to see if the two inputs are numbers 
     if ag1.isdigit() and ag2.isdigit():
-        firstAgent = None
-        secondAgent = None 
-        command1 = "sc2_env.Race."
-        command2 = "sc2_env.Race."
+        # Print message if the two inputs are the same
         if ag1 == ag2:
             print('Same agent')
             breakpoint
-        
+        # Check for the agent number for the first agent
         if ag1 == "1":
+            # Asign the corresponding agent as the firstAgent and getting the command necesary to load the agent
             firstAgent = TerranAgent()
             command1 = sc2_env.Race.terran
         elif ag1 == '2':
@@ -59,7 +55,9 @@ def main(unused_argv):
         elif ag1 == '4':
             print('N/A')
         
+        # Check for the agent number for the second agent
         if ag2 == '1':
+            # Asign the corresponding agent as the secondAgent and getting the command necesary to load the agent
             secondAgent = TerranAgent()
             command2 = sc2_env.Race.terran
         elif ag2 == '2':
@@ -72,11 +70,14 @@ def main(unused_argv):
             print('N/A')
         print(firstAgent, secondAgent)
         # command1 = "sc2_env.Race."
+    # If any of the inputs is not a number
+    else: print('Please enter an agent number.')
 
     try:
       while True:
         with sc2_env.SC2Env(
             map_name="Simple64",
+            # Add the commands completed above to run the agents as the players.
             players=[sc2_env.Agent(command1),
                      sc2_env.Agent(command2)
                     #  sc2_env.Bot(sc2_env.Race.random, sc2_env.Difficulty.very_easy)
@@ -87,7 +88,8 @@ def main(unused_argv):
             step_mul=16,
             game_steps_per_episode=0,
             visualize=True) as env:
-            run_loop.run_loop([firstAgent,secondAgent], env)
+                # Use function run_loop for confronting the two agents 
+                run_loop.run_loop([firstAgent,secondAgent], env)
 
           # agent.setup(env.observation_spec(), env.action_spec())
 
